@@ -1,4 +1,5 @@
-﻿using System.Net.WebSockets;
+﻿using System.Buffers;
+using System.Net.WebSockets;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
@@ -8,7 +9,6 @@ using Nostr.Client.Json;
 using Nostr.Client.Requests;
 using Nostr.Client.Responses;
 using Websocket.Client;
-using Websocket.Client.Models;
 
 namespace Nostr.Client.Tests.Fakes
 {
@@ -58,7 +58,7 @@ namespace Nostr.Client.Tests.Fakes
             return Task.FromResult(true);
         }
 
-        public void Send(string message)
+        public bool Send(string message)
         {
             _sentMessages.Add(message);
 
@@ -72,14 +72,20 @@ namespace Nostr.Client.Tests.Fakes
             var responseParsed = JsonConvert.SerializeObject(response, NostrSerializer.Settings);
 
             _messageSubject.OnNext(ResponseMessage.TextMessage(responseParsed));
+            return true;
         }
 
-        public void Send(byte[] message)
+        public bool Send(byte[] message)
         {
             throw new NotImplementedException();
         }
 
-        public void Send(ArraySegment<byte> message)
+        public bool Send(ArraySegment<byte> message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Send(ReadOnlySequence<byte> message)
         {
             throw new NotImplementedException();
         }
@@ -92,6 +98,21 @@ namespace Nostr.Client.Tests.Fakes
         public Task SendInstant(byte[] message)
         {
             return Task.CompletedTask;
+        }
+
+        public bool SendAsText(byte[] message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SendAsText(ArraySegment<byte> message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SendAsText(ReadOnlySequence<byte> message)
+        {
+            throw new NotImplementedException();
         }
 
         public Task Reconnect()
@@ -113,13 +134,19 @@ namespace Nostr.Client.Tests.Fakes
         public IObservable<ResponseMessage> MessageReceived => _messageSubject.AsObservable();
         public IObservable<ReconnectionInfo> ReconnectionHappened => Observable.Empty<ReconnectionInfo>();
         public IObservable<DisconnectionInfo> DisconnectionHappened => Observable.Empty<DisconnectionInfo>();
+        public TimeSpan ConnectTimeout { get; set; }
         public TimeSpan? ReconnectTimeout { get; set; }
         public TimeSpan? ErrorReconnectTimeout { get; set; }
+        public TimeSpan? LostReconnectTimeout { get; set; }
         public string Name { get; set; }
         public bool IsStarted { get; private set; }
         public bool IsRunning { get; private set; }
+        public bool TextSenderRunning { get; set; }
+        public bool BinarySenderRunning { get; set; }
+        public bool IsInsideLock { get; set; }
         public bool IsReconnectionEnabled { get; set; }
         public bool IsTextMessageConversionEnabled { get; set; }
+        public bool IsStreamDisposedAutomatically { get; set; }
         public ClientWebSocket NativeClient { get; } = null!;
         public Encoding MessageEncoding { get; set; } = Encoding.UTF8;
     }

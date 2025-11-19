@@ -5,7 +5,7 @@ using Serilog;
 using System.Net.WebSockets;
 using Microsoft.Extensions.Options;
 using Nostr.Client.Requests;
-using Websocket.Client.Models;
+using Websocket.Client;
 
 namespace NostrBot.Web.Logic;
 

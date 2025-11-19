@@ -136,7 +136,7 @@ namespace Nostr.Client.Client
         {
             var deserialized = JsonConvert.DeserializeObject<T>(content, _jsonSettings) ??
                    throw new InvalidOperationException("Deserialized message is null, cannot continue");
-            deserialized.CommunicatorName = Communicator.Name;
+            deserialized.CommunicatorName = Communicator.Name ?? "Unknown";
             return deserialized;
         }
 
@@ -145,7 +145,7 @@ namespace Nostr.Client.Client
             return new NostrRawResponse
             {
                 Message = message,
-                CommunicatorName = Communicator.Name
+                CommunicatorName = Communicator.Name ?? "Unknown"
             };
         }
     }

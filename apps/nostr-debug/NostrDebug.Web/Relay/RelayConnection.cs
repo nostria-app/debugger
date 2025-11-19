@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Nostr.Client.Communicator;
 using Websocket.Client;
-using Websocket.Client.Models;
 
 namespace NostrDebug.Web.Relay
 {
