@@ -3,7 +3,9 @@
 @using Newtonsoft.Json
 @using Nostr.Client.Json
 @using System.Text
+@using Blazored.LocalStorage
 @inject NavigationManager Navigation
+@inject ISyncLocalStorageService LocalStorage
 @implements IDisposable
 
 <Stack Orientation="Orientation.Vertical">
@@ -14,7 +16,7 @@
         
     <div class="page-layout">
         
-        <NostrFilterSend @bind-Filter="_filter" FilterSent="OnFilterChanged"></NostrFilterSend>
+        <NostrFilterSend @bind-Filter="_filter" @bind-Filter:after="OnFilterEdited" Subscription="_subscription" SubscriptionChanged="OnSubscriptionChanged" FilterSent="OnFilterChanged"></NostrFilterSend>
         <NostrEventTable></NostrEventTable>
 
     </div>
@@ -22,6 +24,9 @@
 </Stack>
 
 @code {
+    private const string QueryToolFilterKey = "query-tool-filter";
+    private const string QueryToolSubscriptionKey = "query-tool-subscription";
+
     private NostrFilter _filter = new()
     {
         Kinds = new[]
@@ -42,6 +47,7 @@
 
     private string? _appliedQueryBase64;
     private string _pageTitle = "Query Tool";
+    private string _subscription = "query:data";
 
     [Parameter]
     [SupplyParameterFromQuery(Name = "base64")]
@@ -56,14 +62,28 @@
     {
         Navigation.LocationChanged += OnLocationChanged;
 
+        var storedSubscription = LocalStorage.GetItem<string?>(QueryToolSubscriptionKey);
+        if (!string.IsNullOrWhiteSpace(storedSubscription))
+        {
+            _subscription = storedSubscription;
+        }
+
         if (string.IsNullOrWhiteSpace(QueryBase64))
         {
+            var storedFilter = LocalStorage.GetItem<NostrFilter?>(QueryToolFilterKey);
+            if (storedFilter != null)
+            {
+                _filter = storedFilter;
+            }
             return;
         }
 
         var deserialized = DeserializeFilter(QueryBase64);
         if (deserialized != null)
+        {
             _filter = deserialized;
+            StoreFilter();
+        }
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -80,12 +100,38 @@
 
         _filter = deserialized;
         _appliedQueryBase64 = QueryBase64;
+        StoreFilter();
         StateHasChanged();
     }
 
     private void OnFilterChanged()
     {
+        StoreFilter();
         SerializeFilterToUrl(false);
+    }
+
+    private void OnFilterEdited()
+    {
+        StoreFilter();
+    }
+
+    private void StoreFilter()
+    {
+        LocalStorage.SetItem(QueryToolFilterKey, _filter);
+    }
+
+    private void StoreSubscription(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return;
+
+        LocalStorage.SetItem(QueryToolSubscriptionKey, value);
+    }
+
+    private void OnSubscriptionChanged(string value)
+    {
+        _subscription = value;
+        StoreSubscription(value);
     }
 
     private void SerializeFilterToUrl(bool replace)

@@ -26,6 +26,7 @@
                       OptionValue="@(p => p.ToString())"
                       OptionText="@(p => $"{p.ToString()} [{(int)p}]")"
                       @bind-SelectedOptions="_selectedKinds"
+                      @bind-SelectedOptions:after="OnSelectedKindsChanged"
                       @onfocusout="OnLostFocus"
                       style="z-index: 5"
                       >
@@ -65,9 +66,14 @@
         base.OnParametersSet();
     }
 
-    private async Task OnDisplay()
+    private void OnDisplay()
     {
         _displayKindSelector = !_displayKindSelector;
+        UpdateSelected();
+    }
+
+    private void OnSelectedKindsChanged()
+    {
         UpdateSelected();
     }
 

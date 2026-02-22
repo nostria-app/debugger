@@ -8,7 +8,7 @@
 
     <NostrFilterEdit @bind-Filter="Filter" @bind-Filter:after="OnFilterChanged"></NostrFilterEdit>
     
-    <FluentTextField style="width: 100%" Placeholder="" @bind-Value="_subscription">
+    <FluentTextField style="width: 100%" Placeholder="" @bind-Value="Subscription" @bind-Value:after="OnSubscriptionValueChanged">
         <FluentIcon Name="@FluentIcons.PanelLeftKey" Slot="start" Size="@IconSize.Size16" Color=Color.Neutral Variant="IconVariant.Filled" />
         <strong>Subscription</strong>
     </FluentTextField>
@@ -48,7 +48,6 @@
 </Stack>
 
 @code {
-    private string _subscription = "query:data";
     private bool _isWaitingForData;
 
     private readonly Dictionary<string, bool> _subscriptions = new();
@@ -63,7 +62,14 @@
     public NostrFilter Filter { get; set; } = new();
 
     [Parameter]
+    [Required]
+    public string Subscription { get; set; } = "query:data";
+
+    [Parameter]
     public EventCallback<NostrFilter> FilterChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<string> SubscriptionChanged { get; set; }
 
     [Parameter]
     public EventCallback<NostrFilter> FilterSent { get; set; }
@@ -94,6 +100,14 @@
         if (FilterChanged.HasDelegate)
         {
             await FilterChanged.InvokeAsync(Filter);
+        }
+    }
+
+    private async Task OnSubscriptionValueChanged()
+    {
+        if (SubscriptionChanged.HasDelegate)
+        {
+            await SubscriptionChanged.InvokeAsync(Subscription);
         }
     }
 
@@ -143,9 +157,9 @@
 
     private async Task OnSend()
     {
-        _subscriptions[_subscription] = true;
+        _subscriptions[Subscription] = true;
         _isWaitingForData = true;
-        Relays.Client.Send(new NostrRequest(_subscription, Filter));
+        Relays.Client.Send(new NostrRequest(Subscription, Filter));
 
         if (FilterSent.HasDelegate)
         {
