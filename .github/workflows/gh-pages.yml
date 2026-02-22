@@ -29,6 +29,17 @@ jobs:
     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
     - name: Add .nojekyll file
       run: touch build/wwwroot/.nojekyll
+
+    - name: Ensure CNAME is included
+      run: |
+        if [ -f apps/nostr-debug/NostrDebug.Web/wwwroot/CNAME ]; then
+          cp apps/nostr-debug/NostrDebug.Web/wwwroot/CNAME build/wwwroot/CNAME
+        elif [ -f CNAME ]; then
+          cp CNAME build/wwwroot/CNAME
+        fi
+
+        test -f build/wwwroot/CNAME
+        echo "CNAME included: $(cat build/wwwroot/CNAME)"
       
     - name: Deploy to Github Pages
       uses: JamesIves/github-pages-deploy-action@v4
