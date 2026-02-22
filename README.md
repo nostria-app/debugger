@@ -28,6 +28,8 @@ Prerequisites:
 * [.NET 8 SDK](https://dotnet.microsoft.com/download)
 * VS Code with C# extension support (workspace recommendations are included in `.vscode/extensions.json`)
 
+This repo includes `global.json` and is pinned to .NET SDK `8.0.418` for consistent build/debug behavior in VS Code.
+
 Build and test from terminal:
 
 ```bash
@@ -41,6 +43,10 @@ Or use VS Code tasks:
 * `Terminal` -> `Run Task...` -> `test`
 
 F5 (`Run and Debug`) launches `NostrDebug.Web` and opens the default web browser.
+
+Troubleshooting (VS Code):
+* Use Run and Debug profile `Launch NostrDebug.Web`.
+* Expected local URL is `http://localhost:5247`.
 
 ### Usage
 
