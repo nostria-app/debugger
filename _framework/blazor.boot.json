@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "NostrDebug.Web",
   "resources": {
-    "hash": "sha256-BpXPM6XI7+Ja5QnqEd60a5OVBxv8LUze/w6KsoDYXdI=",
+    "hash": "sha256-8v70IbJQYlKnXsi/+mVlteQSDtjbDZJCYdgywBtpero=",
     "jsModuleNative": {
       "dotnet.native.8.0.24.ugqavbte1w.js": "sha256-4g0GzvOXSwZvTLca4PrWJkoeltz+V9IF/hEFDcnVros="
     },
@@ -42,8 +42,8 @@
       "NBitcoin.Secp256k1.wasm": "sha256-wL22K2NPk0217hHsLSrmpEFGBmW6Lk5IN2dup5CYdfo=",
       "NBitcoin.wasm": "sha256-KxevObwK9n687cvepAThvqrryREvZbwbA/1zySpOEEg=",
       "Newtonsoft.Json.wasm": "sha256-s8KVuknfxWl1cuDvQM/OnpBfnpM1rxzvzq21S1cF36U=",
-      "Nostr.Client.wasm": "sha256-cMS6Hbl5Ogk5SE2br2hkw4cJenikgRfUnWgLcWDV2zE=",
-      "NostrDebug.Web.wasm": "sha256-2uLWlzC6dke/Wr+I/I3eseS9eeuC/GtYuExbx0dwMHM=",
+      "Nostr.Client.wasm": "sha256-GdEyjjmkJ8nF2QMKlffPcB4twqw96VmmV9SZa/PhmsU=",
+      "NostrDebug.Web.wasm": "sha256-4ZFbO1a2XO8aKk6i7ZlF7VHSWcgG6LKz/werBISAcKU=",
       "System.Collections.Concurrent.wasm": "sha256-yugl4QnlTjtZhPVdu6/0ntYmK+fJ/zncjbJqoJNrLx4=",
       "System.Collections.NonGeneric.wasm": "sha256-xAAMrSX60W0rMtrZqoDNupKgxUxBo+0/UnaE/bmIe3Y=",
       "System.Collections.Specialized.wasm": "sha256-kgZWQHCET9jOCzRSpMQq/EXoteRoIyrVfnCe7k+ON+c=",
