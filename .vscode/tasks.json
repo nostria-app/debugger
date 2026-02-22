@@ -1,0 +1,80 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "restore",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "restore",
+        "Nostr.Client.sln"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-nostr-debug-web",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "apps/nostr-debug/NostrDebug.Web/NostrDebug.Web.csproj",
+        "--configuration",
+        "Debug",
+        "--no-restore"
+      ],
+      "dependsOn": "restore",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "Nostr.Client.sln",
+        "--configuration",
+        "Debug",
+        "--no-restore"
+      ],
+      "dependsOn": "restore",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-release",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "Nostr.Client.sln",
+        "--configuration",
+        "Release",
+        "--no-restore"
+      ],
+      "dependsOn": "restore",
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "test",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "test",
+        "test/Nostr.Client.Tests/Nostr.Client.Tests.csproj",
+        "--configuration",
+        "Debug",
+        "--no-build"
+      ],
+      "dependsOn": "build",
+      "group": "test",
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}

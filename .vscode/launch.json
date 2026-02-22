@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch NostrDebug.Web",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-nostr-debug-web",
+      "program": "dotnet",
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/apps/nostr-debug/NostrDebug.Web/NostrDebug.Web.csproj",
+        "--urls",
+        "http://localhost:5247",
+        "--no-build"
+      ],
+      "cwd": "${workspaceFolder}/apps/nostr-debug/NostrDebug.Web",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "launchBrowser": {
+        "enabled": true,
+        "args": "${auto-detect-url}",
+        "windows": {
+          "command": "cmd.exe",
+          "args": "/C start ${auto-detect-url}"
+        }
+      },
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      }
+    }
+  ]
+}

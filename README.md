@@ -20,6 +20,28 @@ This library keeps a reliable connection to get real-time data and fast executio
 * targeting .NET 6.0 and higher (.NET Core, Linux/MacOS compatible)
 * reactive extensions ([Rx.NET](https://github.com/Reactive-Extensions/Rx.NET))
 
+### Build in VS Code (no Visual Studio required)
+
+This repository can be built entirely with the .NET SDK and VS Code.
+
+Prerequisites:
+* [.NET 8 SDK](https://dotnet.microsoft.com/download)
+* VS Code with C# extension support (workspace recommendations are included in `.vscode/extensions.json`)
+
+Build and test from terminal:
+
+```bash
+dotnet restore Nostr.Client.sln
+dotnet build Nostr.Client.sln
+dotnet test test/Nostr.Client.Tests/Nostr.Client.Tests.csproj
+```
+
+Or use VS Code tasks:
+* `Terminal` -> `Run Task...` -> `build-nostr-debug-web`
+* `Terminal` -> `Run Task...` -> `test`
+
+F5 (`Run and Debug`) launches `NostrDebug.Web` and opens the default web browser.
+
 ### Usage
 
 #### Receiving events
